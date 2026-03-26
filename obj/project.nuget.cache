@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "tUD6NOnpq34=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\ead_dev\\Documents\\gaspudo\\LH_PET_WEB\\LH_PET_WEB.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\ead_dev\\.nuget\\packages\\bcrypt.net-next\\4.1.0\\bcrypt.net-next.4.1.0.nupkg.sha512"
+  ],
+  "logs": []
+}
