@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using LH_PET_WEB.Data;
 using LH_PET_WEB.Models;
 using LH_PET_WEB.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace LH_PET_WEB.Controllers
 {
@@ -43,7 +44,9 @@ namespace LH_PET_WEB.Controllers
 
             var usuarioIdClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(usuarioIdClaim)) return Unauthorized("Usuário não identificado.");
-            int usuarioId = int.Parse(usuarioIdClaim);
+            int usuarioId;
+            bool parsed = int.TryParse(usuarioIdClaim, out usuarioId);
+            if (!parsed) return BadRequest("ID do usuário inválido.");
 
             using var transaction = await _contexto.Database.BeginTransactionAsync();
 
@@ -78,16 +81,18 @@ namespace LH_PET_WEB.Controllers
                     };
 
                     totalVenda += item.Quantidade * produtoBanco.Preco;
-                    _contexto.ItemVendas.Add(novoItem);
+                    _contexto.ItensVenda.Add(novoItem);
 
                     novaVenda.Total = totalVenda;
                     _contexto.Vendas.Update(novaVenda);
 
                     await _contexto.SaveChangesAsync();
                     await transaction.CommitAsync();
+                }
 
                     return Ok(new { mensagem = "Venda finalizada com sucesso!", vendaId = novaVenda.Id });
-                } catch (Exception ex) 
+                
+            } catch (Exception ex) 
                 {
                     await transaction.RollbackAsync();
                     return BadRequest(new { mensagem = "Erro ao finalizar venda: " + ex.Message });
@@ -176,6 +181,5 @@ namespace LH_PET_WEB.Controllers
     {
         public int ProdutoId { get; set; }
         public int Quantidade { get; set; }
-        }
-    
-}
+    }
+ 

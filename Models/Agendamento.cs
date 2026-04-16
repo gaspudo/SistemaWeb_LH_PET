@@ -24,6 +24,11 @@ namespace LH_PET_WEB.Models
 
         [Required(ErrorMessage = "O campo 'Serviço' é obrigatório.")]
         [MaxLength(50)]
+        [Column("ds_tipo")]
+        public string Tipo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "O campo 'Status' é obrigatório.")]
+        [MaxLength(50)]
         [Column("ds_status")]
         public string Status { get; set; } = "Pendente";
 

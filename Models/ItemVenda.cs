@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 
 
-namespace SistemaWeb_LH_PET.Models
+namespace LH_PET_WEB.Models
 {
     [Table("tb_item_venda")]
     public class ItemVenda

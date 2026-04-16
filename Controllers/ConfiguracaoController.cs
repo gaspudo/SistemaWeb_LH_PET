@@ -40,10 +40,10 @@ namespace LH_PET_WEB.Controllers
         public async Task<IActionResult> Salvar(ConfiguracaoClinica model, List<string> DiasSelecionados)
         {
             // Junta a lista de dias que vieram do formulário (ex: "1", "2") numa string "1,2"
-            model.Dias Trabalho = string.Join(",", DiasSelecionados);
+            model.DiasTrabalho = string.Join(",", DiasSelecionados);
 
             // Ignoramos a validação da string vazia de Dias Trabalho pois montamos ela manualmente acima
-            ModelState.Remove("Dias Trabalho");
+            ModelState.Remove("DiasTrabalho");
 
             if (ModelState.IsValid)
             {
@@ -54,10 +54,10 @@ namespace LH_PET_WEB.Controllers
                     // Atualiza a existente
                     configExistente.HoraAbertura = model.HoraAbertura;
                     configExistente.HoraFechamento = model.HoraFechamento;
-                    configExistente.Dias Trabalho = model.Dias Trabalho;
+                    configExistente.DiasTrabalho = model.DiasTrabalho;
                     configExistente.MinutosConsulta = model.MinutosConsulta;
                     configExistente.MinutosBanho = model.MinutosBanho;
-                    configExistente.Minutos Tosa = model.Minutos Tosa;
+                    configExistente.MinutosTosa = model.MinutosTosa;
 
                     _contexto.Configuracoes.Update(configExistente);
                 }

@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SistemaWeb_LH_PET.Models
+namespace LH_PET_WEB.Models
 {
     [Table("tb_usuario")]
     public class Usuario
     {
+        [Required]
+        [Column("id_usuario")]
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "O nome do usuário é obrigatório.")]
         [MaxLength(255)]
         [Column("nm_usuario")]

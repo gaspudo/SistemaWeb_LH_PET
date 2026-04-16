@@ -4,9 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LH_PET_WEB.Models;
 
 
-namespace SistemaWeb_LH_PET.Models
+namespace LH_PET_WEB.Models
 {
     [Table("tb_pet")]
     public class Pet

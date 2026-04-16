@@ -28,33 +28,33 @@ namespace LH_PET_WEB.Controllers
 
         var vendasMes = await _contexto.Vendas.Where(v => v.DataVenda >= inicioDoMes).ToListAsync();
         
-        var vendasHoje = await _contexto.Vendas.Where(v => v.DataVenda.Date == hoje).ToList();
+        var vendasHoje = await _contexto.Vendas.Where(v => v.DataVenda.Date == hoje).ToListAsync();
 
         var faturamentoPagamento = vendasMes
             .GroupBy(v => v.FormaPagamento)
-            .ToDictionary(g => g.Key, g => g.Sum(v => v.ValorTotal));
+            .ToDictionary(g => g.Key, g => g.Sum(v => v.Total));
 
-        var topProdutos = await contexto.ItensVenda
-            .include(i => i.Produto)
-            .include(i => i.Venda)
+        var topProdutos = await _contexto.ItensVenda
+            .Include(i => i.Produto)
+            .Include(i => i.Venda)
             .Where(i => i.Venda!.DataVenda >= inicioDoMes)
             .GroupBy(i => new {i.ProdutoId, i.Produto!.Nome})
-            .Select(g => new TopProdutoViewModel {
+            .Select(g => new TopProdutosViewModel {
                 NomeProduto = g.Key.Nome,
-                QuantidadeVendida = g.Sum(i => i.Quantidade)
-                ValorTotalGerado = g.Sum(i => i.Quantidade * i.ValorUnitario)
+                QuantidadeVendida = g.Sum(i => i.Quantidade),
+                ValorTotalGerado = g.Sum(i => i.Quantidade * i.PrecoUnitario)
             })
             .OrderByDescending(p => p.QuantidadeVendida)
             .Take(5)
             .ToListAsync();
 
-        var viewModel = new RelatorioViewModel 
+        var viewModel = new RelatorioDashboardViewModel()
         {
             FaturamentoHoje = vendasHoje.Sum(v => v.Total),
             FaturamentoMes = vendasMes.Sum(v => v.Total),
             QuantidadeVendasMes = vendasMes.Count,
             FaturamentoPorPagamento = faturamentoPagamento,
-            ProdutosMaisVendidos = topProdutos
+            TopProdutos = topProdutos
         };
         return View(viewModel);
     }

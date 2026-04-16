@@ -12,7 +12,7 @@ namespace LH_PET_WEB.Validations
         {
             if (value == null || string.IsNullOrWhiteSpace(value.ToString())) return false;
 
-            var cpf = value.ToString()!.Replace(".","").Replace("-","")
+            var cpf = value.ToString()!.Replace(".","").Replace("-","");
 
             if (cpf.Length != 11 || !cpf.All(char.IsDigit)) return false;
 

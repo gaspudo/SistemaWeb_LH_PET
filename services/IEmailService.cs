@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace LH_PET_WEB.services
+namespace LH_PET_WEB.Services
 {
     public interface IEmailService
     {
@@ -26,7 +26,7 @@ namespace LH_PET_WEB.services
             try
             {
                 string servidor = _configuracao["SmtpConfig:Servidor"] ?? "smtp.office365.com";
-                int porta = int.Parse(_configuracao["SmtpConfig:Porta"]) ?? 587;
+                int porta = int.Parse(_configuracao["SmtpConfig:Porta"]);
                 string remetente = _configuracao["SmtpConfig:Usuario"] ?? "";
                 string senha = _configuracao["SmtpConfig:Senha"] ?? "";
 
@@ -61,10 +61,10 @@ namespace LH_PET_WEB.services
             catch (Exception ex)
             {
                 // Log do erro pode ser adicionado aqui
-                Console.WriteLine(NewString('=', 30));
+                Console.WriteLine("============================================");
                 Console.WriteLine($"Erro ao enviar email para {destinatario}");
                 Console.WriteLine($"Detalhes do erro: {ex.Message}");
-               Console.WriteLine(NewString('=', 30));
+               Console.WriteLine("=============================================");
 
                 return false;
             }

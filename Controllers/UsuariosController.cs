@@ -63,7 +63,7 @@ namespace LH_PET_WEB.Controllers
                 Email = model.Email,
                 Perfil = model.Perfil,
                 Ativo = true,
-                SenhaTemporaria = true
+                SenhaTemporaria = true,
                 SenhaHash = BCrypt.Net.BCrypt.HashPassword(senhaGerada)
             };
 

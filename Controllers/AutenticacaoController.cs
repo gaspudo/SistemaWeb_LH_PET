@@ -24,12 +24,12 @@ namespace LH_PET_WEB.Controllers
         public IActionResult Login()
         {
             if (User.Identity is { IsAuthenticated: true }) return RedirectToAction("Index", "Painel");
-            return View(new Login ViewModel());
+            return View(new LoginViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(Login ViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
@@ -47,7 +47,7 @@ namespace LH_PET_WEB.Controllers
                 return View(model);
             }
 
-            if (usuario.Senha Temporaria)
+            if (usuario.SenhaTemporaria)
             {
                 TempData["ResetUsuariold"] = usuario.Id;
                 TempData["Aviso Temporario"] = "Sua senha é temporária. Por favor, defina uma nova senha segura para continuar.";
@@ -64,12 +64,12 @@ namespace LH_PET_WEB.Controllers
         {
             if (TempData["ResetUsuariold"] == null) return RedirectToAction("Login");
             TempData.Keep("ResetUsuariold");
-            return View(new RedefinirSenha ViewModel());
+            return View(new RedefinirSenhaViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RedefinirSenha(RedefinirSenha ViewModel model)
+        public async Task<IActionResult> RedefinirSenha(RedefinirSenhaViewModel model)
         {
             if (TempData["ResetUsuariold"] == null) return RedirectToAction("Login");
 
@@ -85,7 +85,7 @@ namespace LH_PET_WEB.Controllers
             if (usuario != null)
             {
                 usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(model.NovaSenha);
-                usuario.Senha Temporaria = false;
+                usuario.SenhaTemporaria = false;
                 _contexto.Usuarios.Update(usuario);
                 await _contexto.SaveChangesAsync();
 
@@ -125,12 +125,12 @@ namespace LH_PET_WEB.Controllers
         [HttpGet]
         public IActionResult EsqueciSenha()
         {
-            return View(new EsqueciSenha ViewModel());
+            return View(new EsqueciSenhaViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EsqueciSenha(EsqueciSenha ViewModel model)
+        public async Task<IActionResult> EsqueciSenha(EsqueciSenhaViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
@@ -138,14 +138,14 @@ namespace LH_PET_WEB.Controllers
 
             if (usuario != null)
             {
-                string senha Temporaria = Guid.NewGuid().ToString().Substring(0, 8);
-                usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(senha Temporaria);
-                usuario.Senha Temporaria = true;
+                string senhaTemporaria = Guid.NewGuid().ToString().Substring(0, 8);
+                usuario.SenhaHash = BCrypt.Net.BCrypt.HashPassword(senhaTemporaria);
+                usuario.SenhaTemporaria = true;
 
                 _contexto.Usuarios.Update(usuario);
                 await _contexto.SaveChangesAsync();
 
-                string mensagem = $"Olá {usuario.Nome}!\n\nUma redefinição de senha foi solicitada.\nSua nova senha temporária é: {senha Temporaria}\n\nVocê será solicitado a alterá-la no próximo acesso.";
+                string mensagem = $"Olá {usuario.Nome}!\n\nUma redefinição de senha foi solicitada.\nSua nova senha temporária é: {senhaTemporaria}\n\nVocê será solicitado a alterá-la no próximo acesso.";
                 bool emailEnviado = await _emailService.EnviarEmailAsync(usuario.Email, "Recuperação de Senha - VetPlus Care", mensagem);
 
                 if (!emailEnviado)

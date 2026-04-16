@@ -25,7 +25,7 @@ namespace LH_PET_WEB.Data
         public DbSet<Venda> Vendas { get; set; }
         public DbSet<ItemVenda> ItensVenda { get; set; }
     
-        protected overrude void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
@@ -37,7 +37,7 @@ namespace LH_PET_WEB.Data
             modelBuilder.Entity<Usuario>().HasIndex(u => u.Email).IsUnique();
             modelBuilder.Entity<Cliente>().HasIndex(c => c.Cpf).IsUnique();
             modelBuilder.Entity<Fornecedor>().HasIndex(f => f.Cnpj).IsUnique();
-            modelBuilder.Entity<Agendamento>().HasIndex(a => a.AgendamentoId).IsUnique();
+            modelBuilder.Entity<Agendamento>().HasIndex(a => a.Id).IsUnique();
         }
     }
 }

@@ -59,7 +59,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.ProdutosMaisVendidos)
+                        @foreach (var item in Model.TopProdutos)
                         {
                             <tr>
                                 <td class="ps-4 py-3 fw-bold text-dark">@item.NomeProduto</td>
@@ -67,7 +67,7 @@
                                 <td class="py-3 text-end pe-4 text-success fw-bold">R$ @item.ValorTotalGerado.ToString("N2")</td>
                             </tr>
                         }
-                        @if (!Model.ProdutosMaisVendidos.Any())
+                        @if (!Model.TopProdutos.Any())
                         {
                             <tr><td colspan="3" class="text-center py-4 text-muted">Ainda não há vendas registradas neste mês.</td></tr>
                         }
