@@ -27,12 +27,20 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddControllersWithViews();
 // 1. SERVIÇOS - antes do Build()
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie(options =>
-    {
+    .AddCookie(options => {
         options.LoginPath = "/Autenticacao/Login";
         options.AccessDeniedPath = "/Autenticacao/AcessoNegado";
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
-    });
+    }) 
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });;
 
 var app = builder.Build();
 

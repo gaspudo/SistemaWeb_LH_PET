@@ -87,7 +87,7 @@ namespace LH_PET_WEB.Controllers
                 }
 
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var jwtKey = _configuracao["JwtSettings:SecretKey"] ?? "ChavePadraoSeguraDeDesenvolvimento123!";
+                var jwtKey = _configuracao["Jwt:Key"] ?? "ChavePadraoSeguraDeDesenvolvimento123!";
                 var key = Encoding.ASCII.GetBytes(jwtKey);
 
                 var tokenDescriptor = new SecurityTokenDescriptor

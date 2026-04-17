@@ -9,7 +9,7 @@ using LH_PET_WEB.Models.ViewModels;
 
 namespace LH_PET_WEB.Controllers
 {
-    [Authorize(Roles = "Cliente")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Cliente")]
     [ApiController]
     [Route("api/cliente")]
     public class ApiClienteController : ControllerBase
@@ -145,6 +145,28 @@ namespace LH_PET_WEB.Controllers
                 atual = atual.Add(duracao);
             }
             return Ok(horariosLivres);
+        }
+
+        [HttpGet("agendamentos")]
+        public async Task<IActionResult> ListarAgendamentos()
+        {
+            var cliente = await ObterClienteLogadoAsync();
+            if (cliente == null) return Unauthorized();
+
+            var agendamentos = await _contexto.Agendamentos
+                .Where(a => a.Id == cliente.Id)
+                .Include(a => a.Pet)
+                .OrderByDescending(a => a.DataHora)
+                .Select(a => new {
+                    a.Id,
+                    a.DataHora,
+                    a.Tipo,
+                    a.Status,
+                    PetNome = a.Pet.Nome
+                })
+                .ToListAsync();
+
+            return Ok(agendamentos);
         }
     }
 }
