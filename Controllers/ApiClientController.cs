@@ -9,7 +9,7 @@ using LH_PET_WEB.Models.ViewModels;
 
 namespace LH_PET_WEB.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Cliente")]
+    [Authorize(Roles = "Cliente")]
     [ApiController]
     [Route("api/cliente")]
     public class ApiClienteController : ControllerBase
