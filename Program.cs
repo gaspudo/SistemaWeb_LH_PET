@@ -36,6 +36,29 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var contexto = scope.ServiceProvider.GetRequiredService<ContextoBanco>();
+    var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+    var emailAdmin = config["AdminInicial:Email"];
+    var senhaAdmin = config["AdminInicial:Senha"];
+
+    if (!contexto.Usuarios.Any(u => u.Email == emailAdmin))
+    {
+        contexto.Usuarios.Add(new LH_PET_WEB.Models.Usuario
+        {
+            Nome = "Administrador",
+            Email = emailAdmin!,
+            SenhaHash = BCrypt.Net.BCrypt.HashPassword(senhaAdmin),
+            Perfil = "Admin",
+            Ativo = true,
+            SenhaTemporaria = false
+        });
+        contexto.SaveChanges();
+    }
+}
+
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthentication(); // 

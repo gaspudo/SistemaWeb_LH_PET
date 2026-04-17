@@ -11,7 +11,7 @@ namespace LH_PET_WEB.Models
     public class Usuario
     {
         [Required]
-        [Column("id_usuario")]
+        [Column("pk_usuario")]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "O nome do usuário é obrigatório.")]
