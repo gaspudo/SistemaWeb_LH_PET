@@ -26,10 +26,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 var app = builder.Build();
 
-// 2. PIPELINE - depois do Build(), antes do Run()
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication(); // ← FALTA ISSO no seu código
+app.UseAuthentication(); // 
 app.UseAuthorization();
 app.MapStaticAssets();
 app.MapControllerRoute(
