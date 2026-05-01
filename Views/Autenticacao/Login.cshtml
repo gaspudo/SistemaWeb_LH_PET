@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Login";
 }
-
+<main>
 <div class="auth-wrapper py-5">
     <div class="col-md-5 col-lg-4">
         <div class="card card-premium p-4">
@@ -54,6 +54,7 @@
         </div>
     </div>
 </div>
+</main>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
